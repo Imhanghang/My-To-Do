@@ -1,0 +1,12 @@
+.siderContainer {
+  :global {
+    .ant-layout-sider-children {
+      display: flex;
+      gap: 10px;
+      flex-direction: column;
+    }
+    .ant-input-search{
+      padding: 0 5px;
+    }
+  }
+}

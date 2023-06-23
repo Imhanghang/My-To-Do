@@ -1,50 +1,45 @@
-import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
-import icon from '../../assets/icon.svg';
+import React from 'react';
+import { Layout } from 'antd';
 import './App.css';
+import {
+  UnorderedListOutlined,
+  CheckOutlined,
+  HighlightOutlined,
+  ClockCircleOutlined,
+} from '@ant-design/icons';
+import MainMenu from './components/MainMenu/MainMenu';
+import Content from './components/Content/Content';
 
-function Hello() {
+const items = [
+  {
+    key: '1',
+    label: '我的待办',
+    icon: <UnorderedListOutlined />,
+  },
+  {
+    key: '2',
+    label: '已完成',
+    icon: <CheckOutlined />,
+  },
+  {
+    key: '3',
+    label: '笔记',
+    icon: <HighlightOutlined />,
+  },
+  {
+    key: '4',
+    label: '番茄钟',
+    icon: <ClockCircleOutlined />,
+  },
+];
+// eslint-disable-next-line react/function-component-definition
+const App: React.FC = () => {
   return (
-    <div>
-      <div className="Hello">
-        <img width="200" alt="icon" src={icon} />
-      </div>
-      <h1>electron-react-boilerplate</h1>
-      <div className="Hello">
-        <a
-          href="https://electron-react-boilerplate.js.org/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <button type="button">
-            <span role="img" aria-label="books">
-              📚
-            </span>
-            Read our docs
-          </button>
-        </a>
-        <a
-          href="https://github.com/sponsors/electron-react-boilerplate"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <button type="button">
-            <span role="img" aria-label="folded hands">
-              🙏
-            </span>
-            Donate
-          </button>
-        </a>
-      </div>
-    </div>
+    <Layout style={{ minHeight: '100vh' }}>
+      <MainMenu items={items}/>
+      <Content />
+    </Layout>
   );
-}
+};
 
-export default function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Hello />} />
-      </Routes>
-    </Router>
-  );
-}
+export default App;
