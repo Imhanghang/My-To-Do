@@ -38,7 +38,9 @@ if (
   execSync('npm run postinstall');
 }
 
-const configuration: webpack.Configuration = {
+const configuration: {
+  devtool: string; mode: string; output: { path: string; filename: string; library: { type: string }; publicPath: string }; devServer: { headers: { "Access-Control-Allow-Origin": string }; static: { publicPath: string }; historyApiFallback: { verbose: boolean }; setupMiddlewares(middlewares): any; port: string | number; compress: boolean; hot: boolean }; entry: string[]; node: { __dirname: boolean; __filename: boolean }; plugins: (DllReferencePlugin | NoEmitOnErrorsPlugin | EnvironmentPlugin | LoaderOptionsPlugin | ReactRefreshPlugin | HtmlWebpackPlugin)[]; module: { rules: ({ include: RegExp; test: RegExp; use: (string | { loader: string; options: { sourceMap: boolean; importLoaders: number; modules: boolean } })[] } | { test: RegExp; use: (string)[]; exclude: RegExp } | { test: RegExp; type: string } | { test: RegExp; type: string } | { test: RegExp; use: ({ loader: string; options: { ref: boolean; svgoConfig: { plugins: { removeViewBox: boolean }[] }; titleProp: boolean; svgo: boolean; prettier: boolean } } | string)[] })[] }; target: string[]
+} = {
   devtool: 'inline-source-map',
 
   mode: 'development',

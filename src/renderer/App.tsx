@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Layout } from 'antd';
 import './App.css';
 import {
@@ -7,37 +7,38 @@ import {
   HighlightOutlined,
   ClockCircleOutlined,
 } from '@ant-design/icons';
-import MainMenu from './components/MainMenu/MainMenu';
+import LeftMenu from './components/LeftMenu/LeftMenu';
 import Content from './components/Content/Content';
 
 const items = [
   {
-    key: '1',
+    key: '我的待办',
     label: '我的待办',
     icon: <UnorderedListOutlined />,
   },
   {
-    key: '2',
+    key: '已完成',
     label: '已完成',
     icon: <CheckOutlined />,
   },
   {
-    key: '3',
+    key: '笔记',
     label: '笔记',
     icon: <HighlightOutlined />,
   },
   {
-    key: '4',
+    key: '番茄钟',
     label: '番茄钟',
     icon: <ClockCircleOutlined />,
   },
 ];
 // eslint-disable-next-line react/function-component-definition
 const App: React.FC = () => {
+  const [title, setTitle] = useState('');
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <MainMenu items={items}/>
-      <Content />
+      <LeftMenu items={items} setTitle={setTitle}/>
+      <Content title={title}/>
     </Layout>
   );
 };

@@ -15,7 +15,7 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 'error',
   },
   parserOptions: {
-    ecmaVersion: 2020,
+    ecmaVersion: 2022,
     sourceType: 'module',
     project: './tsconfig.json',
     tsconfigRootDir: __dirname,
