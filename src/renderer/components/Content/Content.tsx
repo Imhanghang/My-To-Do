@@ -20,12 +20,17 @@ function onSelectTime() {
 export interface ContentProps {
   title: string
 }
-export interface TodoItem {
+export interface TodoItemProps {
   id: number,
   content: string,
-  time: string,
+  time: Date,
   status?: string,
 }
+
+interface Moment {
+  toDate: Function,
+}
+
 const Content: React.FC<ContentProps> = ({ title }) => {
   const [form] = Form.useForm();
   const inputRef = useRef<{ input: HTMLInputElement }>(null);
@@ -71,7 +76,7 @@ const Content: React.FC<ContentProps> = ({ title }) => {
     };
   }, [inputRef]);
 
-  function addTodo(todo: TodoItem) {
+  function addTodo(todo: TodoItemProps) {
     const store = loadState() || {};
     const todoList = store.todoList || [];
     todoList.push(todo);
@@ -84,12 +89,13 @@ const Content: React.FC<ContentProps> = ({ title }) => {
       if (!form.getFieldValue("todo")) {
         return;
       }
-      const { time } = values;
-      const date = time.format("YYYY-MM-DD HH:mm");
-      const todo: TodoItem = {
+      const { time } : {time: Moment} = values;
+      console.log(typeof time.toDate());
+      // const date = time.format("YYYY-MM-DD HH:mm");
+      const todo: TodoItemProps = {
         id: new Date().getTime(),
         content: form.getFieldValue("todo"),
-        time: date
+        time: time.toDate()
       } ;
       addTodo(todo);
       form.resetFields();
