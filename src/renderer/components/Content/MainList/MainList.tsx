@@ -3,14 +3,17 @@ import React, { useState } from "react";
 import { FieldTimeOutlined } from "@ant-design/icons";
 import { loadState, saveState } from "../../../local-storage";
 import { ListItem } from "./ListItem/ListItem";
+import { TodoItem } from "../Content";
 
+interface MainListProps {
+  list: Array<TodoItem>,
+}
 
-
-export const MainList = ({list}) => {
+export const MainList = ({list}:MainListProps) => {
   const [, updateView] = useState<number>(new Date().getTime());
 
 
-  function onCheck(item: any) {
+  function onCheck(item: TodoItem) {
     return () => {
       let splice = list.splice(list.indexOf(item), 1);
       const store = loadState() || {};
@@ -24,7 +27,7 @@ export const MainList = ({list}) => {
     }
   }
 
-  function renderList(list: T[string]) {
+  function renderList(list: Array<TodoItem>) {
     return list?.map((item: any) => {
       return (
         <ListItem item={item} onCheck={onCheck}/>

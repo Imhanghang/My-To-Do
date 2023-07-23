@@ -13,7 +13,7 @@ function CurrentDateTime() {
     };
   }, []);
 
-  const options = { weekday: 'long' };
+  const options: Intl.DateTimeFormatOptions = { weekday: 'long' };
   const weekday = dateTime.toLocaleString('zh-CN', options);
 
   return (

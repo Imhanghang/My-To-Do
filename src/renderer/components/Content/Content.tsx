@@ -17,10 +17,10 @@ function onSelectTime() {
 
 
 // eslint-disable-next-line react/function-component-definition
-interface ContentProps {
+export interface ContentProps {
   title: string
 }
-interface TodoItem {
+export interface TodoItem {
   id: number,
   content: string,
   time: string,
@@ -106,6 +106,7 @@ const Content: React.FC<ContentProps> = ({ title }) => {
         <MainList list={list}/>
         <Form className={styles.addTodo} form={form}>
           <Form.Item name="todo" rules={[{ required: true }]}>
+            {/* @ts-ignore */}
             <Input placeholder="添加任务" ref={inputRef} onPressEnter={handleCommit} />
           </Form.Item>
           <Form.Item name="time" rules={[{ required: true }]}><DatePicker showTime format={"YYYY-MM-DD HH:mm"} /></Form.Item>
