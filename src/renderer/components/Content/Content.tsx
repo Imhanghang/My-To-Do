@@ -6,6 +6,8 @@ import styles from "./index.module.scss";
 import Store from "electron-store";
 import { loadState, saveState } from "../../local-storage";
 import { MainList } from "./MainList/MainList";
+import useUpdate from "../../hooks/useUpdate";
+import useGlobalStore, { GlobalStore } from "../../store/globalStore";
 
 const AntContent = Layout.Content;
 
@@ -20,11 +22,20 @@ function onSelectTime() {
 export interface ContentProps {
   title: string
 }
+
+
+export enum ItemStatusEnum {
+  TODO = 'TODO',
+  FINISHED = 'FINISHED',
+  DELETED = 'DELETED',
+}
+
 export interface TodoItemProps {
   id: number,
   content: string,
   time: Date,
-  status?: string,
+  status: ItemStatusEnum,
+  star: boolean,
 }
 
 interface Moment {
@@ -34,7 +45,8 @@ interface Moment {
 const Content: React.FC<ContentProps> = ({ title }) => {
   const [form] = Form.useForm();
   const inputRef = useRef<{ input: HTMLInputElement }>(null);
-  const [, updateView] = useState<number>(new Date().getTime());
+  const updateView = useUpdate();
+  const { todoList,finishedList } = useGlobalStore((store: any) => store);
   // const [list, setList] = useState<[]>();
   let list = getList(title);
 
@@ -42,9 +54,6 @@ const Content: React.FC<ContentProps> = ({ title }) => {
 
 // const store = new Store();
   function getList(title: any) {
-    let store = loadState() || {};
-    const todoList = store.todoList || [];
-    const finishedList = store.finishedList || [];
     let res;
     switch (title) {
       case "我的待办":
@@ -91,15 +100,16 @@ const Content: React.FC<ContentProps> = ({ title }) => {
       }
       const { time } : {time: Moment} = values;
       console.log(typeof time.toDate());
-      // const date = time.format("YYYY-MM-DD HH:mm");
       const todo: TodoItemProps = {
         id: new Date().getTime(),
         content: form.getFieldValue("todo"),
-        time: time.toDate()
+        time: time.toDate(),
+        star: false,
+        status: ItemStatusEnum.TODO,
       } ;
       addTodo(todo);
       form.resetFields();
-      updateView(new Date().getTime());
+      updateView();
     }).catch(error=>{
       console.log(error);
     })
@@ -109,7 +119,7 @@ const Content: React.FC<ContentProps> = ({ title }) => {
       <div className={styles.container}>
         <h1>{title}</h1>
         <CurrentDateTime />
-        <MainList list={list}/>
+        <MainList list={list} updateView={updateView}/>
         <Form className={styles.addTodo} form={form}>
           <Form.Item name="todo" rules={[{ required: true }]}>
             {/* @ts-ignore */}

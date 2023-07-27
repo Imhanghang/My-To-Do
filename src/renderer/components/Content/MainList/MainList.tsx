@@ -1,18 +1,15 @@
 import styles from "../index.module.scss";
 import React, { useState } from "react";
-import { FieldTimeOutlined } from "@ant-design/icons";
 import { loadState, saveState } from "../../../local-storage";
 import { TodoItem } from "./ListItem/TodoItem";
 import { TodoItemProps } from "../Content";
 
 interface MainListProps {
   list: Array<TodoItemProps>,
+  updateView: Function,
 }
 
-export const MainList = ({list}:MainListProps) => {
-  const [, updateView] = useState<number>(new Date().getTime());
-
-
+export const MainList = ({list, updateView}:MainListProps) => {
   function onCheck(item: TodoItemProps) {
     return () => {
       let splice = list.splice(list.indexOf(item), 1);
@@ -22,15 +19,14 @@ export const MainList = ({list}:MainListProps) => {
       store.finishedList = finishedList;
       store.todoList = list;
       saveState(store);
-
-      updateView(new Date().getTime());
+      updateView();
     }
   }
 
   function renderList(list: Array<TodoItemProps>) {
     return list?.map((item: any) => {
       return (
-        <TodoItem item={item} onCheck={onCheck}/>
+        <TodoItem item={item} onCheck={onCheck} updateView={updateView}/>
       );
     });
   }
