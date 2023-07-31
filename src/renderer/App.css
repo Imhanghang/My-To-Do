@@ -2,7 +2,13 @@
  * @NOTE: Prepend a `~` to css file paths that are in your node_modules
  *        See https://github.com/webpack-contrib/sass-loader#imports
  */
+
+ @font-face {
+  font-family: "OPlusSans3-Regular";
+  src: url("../../assets/font/OPlusSans3-Regular.ttf");
+}
 body {
+  font-family: "OPlusSans3-Regular", sans-serif !important;
   position: relative;
   color: hsl(0, 2%, 8%);
   height: 100vh;
@@ -12,12 +18,15 @@ body {
     #dd5789 51.77%,
     #7a2c9e 129.35%
   );
-  font-family: sans-serif;
   overflow-y: hidden;
   margin: 0 !important;
   /* display: flex; */
   /* justify-content: center; */
   /* align-items: center; */
+}
+
+* {
+  font-family: "OPlusSans3-Regular", sans-serif !important;
 }
 
 button {
