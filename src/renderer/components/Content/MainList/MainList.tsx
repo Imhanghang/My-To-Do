@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { loadState, saveState } from "../../../local-storage";
 import { TodoItem } from "./ListItem/TodoItem";
 import { TodoItemProps } from "../Content";
+import useGlobalStore from '../../../store/globalStore';
 
 interface MainListProps {
   list: Array<TodoItemProps>,
@@ -10,15 +11,12 @@ interface MainListProps {
 }
 
 export const MainList = ({list, updateView}:MainListProps) => {
+  const { checkTodo } = useGlobalStore((store: any) => store);
+
   function onCheck(item: TodoItemProps) {
     return () => {
       let splice = list.splice(list.indexOf(item), 1);
-      const store = loadState() || {};
-      const finishedList = store.finishedList || [];
-      finishedList.push(splice[0]);
-      store.finishedList = finishedList;
-      store.todoList = list;
-      saveState(store);
+      checkTodo(splice[0])
       updateView();
     }
   }

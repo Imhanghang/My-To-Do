@@ -9,24 +9,32 @@
   transition: all 1s ease-in-out;
   font-size: 16px;
   position: relative;
+  padding: 0 10px;
+
   div {
     padding: 10px;
   }
 
-  .content{
+  &:hover {
+    // gray
+    box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .content {
     width: 70%;
   }
-  .otherInfo{
+
+  .otherInfo {
     font-size: 12px;
     display: flex;
     gap: 5px;
   }
 
-  .beforeToday{
+  .beforeToday {
     color: #ff0000;
   }
 
-  .lastElement{
+  .lastElement {
     margin-left: auto;
     margin-right: 10px;
   }

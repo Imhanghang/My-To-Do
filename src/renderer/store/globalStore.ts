@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { TodoItemProps } from "../components/Content/Content";
-import { loadState } from "../local-storage";
+import { loadState, saveState } from '../local-storage';
 
 export interface GlobalStore {
   todoList: TodoItemProps[]
@@ -14,13 +14,18 @@ const useGlobalStore = create((set) => ({
   todoList: loadState().todoList || [],
   finishedList: loadState().finishedList || [],
   deletedList: loadState().finishedList || [],
-  addTodo: (todo: string) => {
+  addTodo: (todo: TodoItemProps) => {
     set((state: GlobalStore) => ({ todoList: [...state.todoList, todo] }));
-
+    saveState({...loadState(), todoList: [...loadState().todoList, todo]})
   },
-  addFinished: (todo: string) =>
+  checkTodo: (todo: TodoItemProps) => {
+    set((state: GlobalStore) => ({ todoList: [...state.todoList.filter((item) => item !== todo)] }));
+    set((state: GlobalStore) => ({ finishedList: [...state.finishedList, todo] }));
+    saveState({...loadState(), todoList: [...loadState().todoList.filter((item:TodoItemProps) => item !== todo)]})
+  },
+  addFinished: (todo: TodoItemProps) =>
     set((state:GlobalStore) => ({ finishedList: [...state.finishedList, todo] })),
-  addDeleted: (todo: string) =>
+  addDeleted: (todo: TodoItemProps) =>
     set((state:GlobalStore) => ({ deletedList: [...state.deletedList, todo] })),
 }))
 

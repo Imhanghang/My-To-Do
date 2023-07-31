@@ -1,9 +1,7 @@
 import { Button, DatePicker, Form, Input, Layout, theme } from "antd";
-import { FieldTimeOutlined } from "@ant-design/icons";
 import React, { useEffect, useRef, useState } from "react";
 import CurrentDateTime from "./DateClock/DateClock";
 import styles from "./index.module.scss";
-import Store from "electron-store";
 import { loadState, saveState } from "../../local-storage";
 import { MainList } from "./MainList/MainList";
 import useUpdate from "../../hooks/useUpdate";
@@ -12,10 +10,6 @@ import useGlobalStore, { GlobalStore } from "../../store/globalStore";
 const AntContent = Layout.Content;
 
 
-
-function onSelectTime() {
-
-}
 
 
 // eslint-disable-next-line react/function-component-definition
@@ -46,8 +40,7 @@ const Content: React.FC<ContentProps> = ({ title }) => {
   const [form] = Form.useForm();
   const inputRef = useRef<{ input: HTMLInputElement }>(null);
   const updateView = useUpdate();
-  const { todoList,finishedList } = useGlobalStore((store: any) => store);
-  // const [list, setList] = useState<[]>();
+  const { todoList, finishedList, addTodo } = useGlobalStore((store: any) => store);
   let list = getList(title);
 
 
@@ -84,22 +77,13 @@ const Content: React.FC<ContentProps> = ({ title }) => {
       }
     };
   }, [inputRef]);
+  let handleAdd = () => {
 
-  function addTodo(todo: TodoItemProps) {
-    const store = loadState() || {};
-    const todoList = store.todoList || [];
-    todoList.push(todo);
-    store.todoList = todoList;
-    saveState(store);
-  }
-
-  let handleCommit = () => {
     form.validateFields().then((values) => {
       if (!form.getFieldValue("todo")) {
         return;
       }
       const { time } : {time: Moment} = values;
-      console.log(typeof time.toDate());
       const todo: TodoItemProps = {
         id: new Date().getTime(),
         content: form.getFieldValue("todo"),
@@ -121,12 +105,12 @@ const Content: React.FC<ContentProps> = ({ title }) => {
         <CurrentDateTime />
         <MainList list={list} updateView={updateView}/>
         <Form className={styles.addTodo} form={form}>
-          <Form.Item name="todo" rules={[{ required: true }]}>
+          <Form.Item name="todo" rules={[{ required: true }]} className={styles.input}>
             {/* @ts-ignore */}
-            <Input placeholder="添加任务" ref={inputRef} onPressEnter={handleCommit} />
+            <Input placeholder="添加任务" ref={inputRef} onPressEnter={handleAdd} />
           </Form.Item>
           <Form.Item name="time" rules={[{ required: true }]}><DatePicker showTime format={"YYYY-MM-DD HH:mm"} /></Form.Item>
-          <Button type="link" htmlType="button" onClick={handleCommit}>
+          <Button type="link" htmlType="button" onClick={handleAdd}>
             添加
           </Button>
         </Form>
